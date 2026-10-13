@@ -28,8 +28,8 @@ public class TaskController {
     public String index() {
         return "index";
     }
-    // ★【確定版バリデーション】未入力時はエラーを返し、入力時は本番DBと100%照合します
-    @PostMapping("/login")
+// ★【確定版バリデーション】未入力時はエラーを返し、入力時は本番DBと100%照合します
+@PostMapping("/login")
     public String login(
             @RequestParam(value = "username", required = false) String username, 
             @RequestParam(value = "password", required = false) String password, 
@@ -142,7 +142,7 @@ public class TaskController {
         model.addAttribute("tasks", pagedTasks);
         return "tasks";
     }
-    @GetMapping("/dashboard")
+     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         List<Task> allTasks = taskRepository.findAll();
         LocalDate today = LocalDate.now();
@@ -328,6 +328,4 @@ public class TaskController {
     public String logout() {
         return "redirect:/";
     }
-}
-
-
+}   
