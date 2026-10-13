@@ -28,35 +28,32 @@ public class TaskController {
     public String index() {
         return "index";
     }
-
-    // ★【バリデーション＆認証強化版】先生の要求通り、未入力チェックとDB照合を完全実装しました
+    // ★【確定版バリデーション】未入力時はエラーを返し、入力時は本番DBと100%照合します
     @PostMapping("/login")
     public String login(
             @RequestParam(value = "username", required = false) String username, 
             @RequestParam(value = "password", required = false) String password, 
             Model model) {
         
-        // 1. バリデーションチェック（未入力・空白のチェック）
         if (username == null || username.trim().isEmpty()) {
             model.addAttribute("errorMessage", "ユーザー名を入力してください。");
-            return "index"; // ログイン画面に戻してエラーを表示
+            return "index";
         }
         if (password == null || password.trim().isEmpty()) {
             model.addAttribute("errorMessage", "パスワードを入力してください。");
             return "index";
         }
         
-        // 2. データベース（Aiven）からユーザーを検索して照合
         Optional<User> userOpt = userRepository.findByUsername(username.trim());
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
-            return "redirect:/tasks"; // 一致したら一覧へ
+            return "redirect:/tasks";
         } else {
-            // バリデーションを通過しても、名前やパスワードがDBと違えばエラーにする
             model.addAttribute("errorMessage", "ユーザー名またはパスワードが正しくありません。");
             return "index";
         }
     }
 
+    // ★【自動ユーザー作成機能】画面を開いた瞬間に、ログイン用の「test_user」をDBへ自動登録します
     @GetMapping("/tasks")
     public String tasks(
             @RequestParam(value = "keyword", required = false) String keyword,
@@ -65,6 +62,15 @@ public class TaskController {
             @RequestParam(value = "sortOrder", required = false, defaultValue = "newest") String sortOrder,
             @RequestParam(value = "page", required = false, defaultValue = "0") int page,
             Model model) {
+        
+        // 【最重要】データベースに test_user が存在するか確認し、いなければその場で自動登録！
+        Optional<User> defaultUserOpt = userRepository.findByUsername("test_user");
+        if (!defaultUserOpt.isPresent()) {
+            User defaultUser = new User();
+            defaultUser.setUsername("test_user");
+            defaultUser.setPassword("password");
+            userRepository.save(defaultUser); // Aivenデータベースへガチッと保存
+        }
         
         List<Task> allTasks = taskRepository.findAll();
         
@@ -136,7 +142,6 @@ public class TaskController {
         model.addAttribute("tasks", pagedTasks);
         return "tasks";
     }
-
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         List<Task> allTasks = taskRepository.findAll();
@@ -219,7 +224,7 @@ public class TaskController {
         
         return "dashboard";
     }
-        // ─── ここから後半部分が合体します ───
+
     @GetMapping("/tasks/create")
     public String create() {
         return "create";
@@ -324,4 +329,5 @@ public class TaskController {
         return "redirect:/";
     }
 }
+
 
