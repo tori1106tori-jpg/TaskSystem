@@ -2,7 +2,7 @@ package com.example.demo;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList; // ★日別集計のリスト作成に必須のインポートを追加
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,14 +29,29 @@ public class TaskController {
         return "index";
     }
 
+    // ★【バリデーション＆認証強化版】先生の要求通り、未入力チェックとDB照合を完全実装しました
     @PostMapping("/login")
-    public String login(@RequestParam("username") String username, 
-                        @RequestParam("password") String password, 
-                        Model model) {
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public String login(
+            @RequestParam(value = "username", required = false) String username, 
+            @RequestParam(value = "password", required = false) String password, 
+            Model model) {
+        
+        // 1. バリデーションチェック（未入力・空白のチェック）
+        if (username == null || username.trim().isEmpty()) {
+            model.addAttribute("errorMessage", "ユーザー名を入力してください。");
+            return "index"; // ログイン画面に戻してエラーを表示
+        }
+        if (password == null || password.trim().isEmpty()) {
+            model.addAttribute("errorMessage", "パスワードを入力してください。");
+            return "index";
+        }
+        
+        // 2. データベース（Aiven）からユーザーを検索して照合
+        Optional<User> userOpt = userRepository.findByUsername(username.trim());
         if (userOpt.isPresent() && userOpt.get().getPassword().equals(password)) {
-            return "redirect:/tasks";
+            return "redirect:/tasks"; // 一致したら一覧へ
         } else {
+            // バリデーションを通過しても、名前やパスワードがDBと違えばエラーにする
             model.addAttribute("errorMessage", "ユーザー名またはパスワードが正しくありません。");
             return "index";
         }
@@ -183,36 +198,28 @@ public class TaskController {
         model.addAttribute("dashStudyCount", dashStudyCount);
         model.addAttribute("studyRate", Math.round(studyRate * 10) / 10.0);
         
-        // ─── ★【追加】過去7日間の日別タスク作成数の集計ロジック ───
         List<String> dateLabels = new ArrayList<>();
         List<Long> dateCounts = new ArrayList<>();
         List<Double> dateRates = new ArrayList<>();
         
-        // 過去7日前から今日までループ処理
         for (int i = 6; i >= 0; i--) {
             LocalDate targetDate = today.minusDays(i);
-            // 画面表示用の日付（例：2026-08-01）
             dateLabels.add(targetDate.toString());
-            
-            // その日に作成されたタスク数をカウント
             long count = allTasks.stream()
                     .filter(t -> t.getCreatedAt() != null && t.getCreatedAt().toLocalDate().isEqual(targetDate))
                     .count();
             dateCounts.add(count);
-            
-            // グラフの長さを計算（一番多い日を100%にするのがベストですが、今回は総タスク数に対する割合にします）
             double rate = totalTasks == 0 ? 0.0 : ((double) count / totalTasks) * 100;
             dateRates.add(Math.round(rate * 10) / 10.0);
         }
         
-        // まとめて画面に渡す
         model.addAttribute("dateLabels", dateLabels);
         model.addAttribute("dateCounts", dateCounts);
         model.addAttribute("dateRates", dateRates);
         
         return "dashboard";
     }
-    // ─── ここから後半部分が合体します ───
+        // ─── ここから後半部分が合体します ───
     @GetMapping("/tasks/create")
     public String create() {
         return "create";
@@ -317,3 +324,4 @@ public class TaskController {
         return "redirect:/";
     }
 }
+
