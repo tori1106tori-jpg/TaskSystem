@@ -7,15 +7,15 @@ WORKDIR /app
 # 3. プログラム一式をコピー
 COPY . .
 
-# 4. 最初から入っている mvn コマンドで安全にビルドを実行
+# 4. mvn コマンドで安全にビルドを実行
 RUN mvn clean package -DskipTests
 
 # 5. 動かす用の軽量なJava環境を新しく用意
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 
-# 6. 組み立て終わった実行ファイル（jar）だけを次の環境に持ってくる
-COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+# 6. ★【修正】targetフォルダの中にある「.jar」ファイルを名前を問わず全てコピーします
+COPY --from=build /app/target/*.jar app.jar
 
 # 7. ポート番号を開放
 EXPOSE 8080
