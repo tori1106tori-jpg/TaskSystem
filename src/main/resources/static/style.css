@@ -1,0 +1,315 @@
+/* === 全体の基本設定 === */
+body {
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    background-color: #f4f6f9;
+    margin: 0;
+    padding: 20px 40px;
+    color: #2d3748;
+}
+
+/* === ヘッダー部分 === */
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.header-container h1 {
+    color: #1a365d;
+    font-size: 28px;
+    margin: 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+}
+
+.user-name {
+    font-weight: bold;
+}
+
+.header-btn {
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+.btn-dashboard {
+    background-color: #1a365d;
+    color: white;
+}
+
+.btn-logout {
+    background-color: #718096;
+    color: white;
+}
+
+/* === メインの白いカード枠 === */
+.main-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    margin-bottom: 20px;
+}
+
+.search-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-input {
+    flex: 1;
+    padding: 10px 15px;
+    border: 1px solid #cbd5e0;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.btn-search {
+    padding: 10px 24px;
+    background-color: #1a365d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.filter-container {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.filter-btn {
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 13px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-all {
+    background-color: #1a365d;
+    color: white;
+    border: none;
+}
+
+.btn-favorite {
+    background-color: white;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+}
+
+.category-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.category-label {
+    font-weight: bold;
+    color: #4a5568;
+    margin-right: 5px;
+}
+
+.category-btn {
+    padding: 4px 12px;
+    background-color: #edf2f7;
+    color: #4a5568;
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.sort-container {
+    font-size: 13px;
+    color: #718096;
+}
+
+.sort-label {
+    font-weight: bold;
+    color: #4a5568;
+}
+
+.sort-link {
+    color: #718096;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.sort-link.active {
+    color: #1a365d;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+/* === 表（テーブル）のCSS === */
+.info-text {
+    font-size: 13px;
+    color: #718096;
+    margin-bottom: 10px;
+}
+
+.task-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 14px;
+}
+
+.task-table th {
+    background-color: #1a365d;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: bold;
+    border: 1px solid #cbd5e0;
+}
+
+.task-table td {
+    padding: 12px;
+    border: 1px solid #cbd5e0;
+    vertical-align: middle;
+}
+
+/* お気に入りタスクの行全体の背景を、スクショ通りの淡い黄色にする */
+.row-fav {
+    background-color: #fffdf5 !important;
+}
+
+/* お気に入り行の、一番左のマスの枠線を黄色い太線で完全に上書きする */
+.row-fav td:first-child {
+    border-left: 5px solid #ecc94b !important;
+    border-top: 1px solid #cbd5e0 !important;
+    border-bottom: 1px solid #cbd5e0 !important;
+}
+
+.star-active {
+    color: #ecc94b;
+    font-size: 16px;
+}
+
+.star-inactive {
+    color: #cbd5e0;
+    font-size: 16px;
+}
+
+/* 星マークのリンクにマウスを乗せた時、少し大きくして押しやすくする設定 */
+.star-link {
+    text-decoration: none;
+    cursor: pointer;
+    display: inline-block;
+    transition: transform 0.1s ease;
+}
+.star-link:hover {
+    transform: scale(1.2);
+}
+
+/* 各種バッジ */
+.badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.badge-work { background-color: #ebf8ff; color: #2b6cb0; }
+.badge-study { background-color: #faf5ff; color: #6b46c1; }
+.badge-private { background-color: #f7fafc; border: 1px solid #e2e8f0; color: #4a5568; }
+
+.badge-progress { background-color: #e6fffa; color: #319795; border: 1px solid #b2f5ea; }
+.badge-done { background-color: #edf2f7; color: #718096; }
+.badge-todo { background-color: #fff5f5; color: #e53e3e; }
+
+.badge-high { background-color: #fff5f5; color: #c53030; }
+.badge-mid { background-color: #fffaf0; color: #dd6b20; }
+.badge-low { background-color: #f7fafc; color: #718096; }
+
+/* 操作ボタン */
+.action-btn {
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-right: 4px;
+    font-weight: bold;
+}
+.btn-edit { background-color: #3182ce; }
+.btn-copy { background-color: #805ad5; }
+.btn-delete { background-color: #e53e3e; }
+
+/* === 下部エリア（ページネーション・新規作成） === */
+.footer-area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin-top: 10px;
+}
+
+/* ★【修正】ページネーション（1 2 次へ）を画面の真ん中に寄せる完璧な設定 */
+.pagination {
+    display: flex !important;
+    justify-content: center !important; /* 左右の真ん中に集める */
+    gap: 5px;
+    margin-top: 20px;
+    margin-bottom: 25px; /* 新規作成ボタンとの間の隙間 */
+    width: 100%;
+}
+
+/* ★【追加】数字ボタン自体の見た目を画像通りに整える設定 */
+.page-link {
+    padding: 6px 12px;
+    border: 1px solid #cbd5e0;
+    background-color: white;
+    color: #4a5568;
+    text-decoration: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+/* ★【追加】現在選択されている数字ボタンを濃い紺色にする設定 */
+.page-link.active {
+    background-color: #1a365d !important;
+    color: white !important;
+    border-color: #1a365d !important;
+}
+
+.page-link:hover:not(.active) {
+    background-color: #edf2f7;
+}
+
+.create-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.btn-create {
+    padding: 10px 20px;
+    background-color: #1a365d;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 14px;
+}

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>タスク管理システム - ログイン</title>
+    <style>
+        body {
+            font-family: "Helvetica Neue", Arial, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .login-container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 350px;
+            text-align: center;
+        }
+
+        h1 {
+            color: #1a365d;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #4a5568;
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+
+        /* 【追加】画像通りの赤い警告メッセージのデザイン */
+        .error-box {
+            background-color: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #c53030;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .form-group {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        input[type="text"], input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 12px;
+            background-color: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background-color: #2a4365;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-container">
+        <h1>タスク管理システム</h1>
+        <div class="subtitle">ログイン</div>
+        
+        <!-- 【追加】Javaからエラーメッセージが届いたときだけ、この枠を表示する -->
+        <div class="error-box" th:if="${errorMessage}" th:text="${errorMessage}"></div>
+        
+        <!-- Javaの /login にデータを送る設定 -->
+        <form th:action="@{/login}" method="post">
+            <div class="form-group">
+                <label>ユーザー名</label>
+                <!-- name="username" を追加 -->
+                <input type="text" name="username" placeholder="ユーザー名を入力" required>
+            </div>
+            
+            <div class="form-group">
+                <label>パスワード</label>
+                <!-- name="password" を追加 -->
+                <input type="password" name="password" placeholder="パスワードを入力" required>
+            </div>
+            
+            <button type="submit" class="login-btn">ログイン</button>
+        </form>
+    </div>
+
+</body>
+</html>
