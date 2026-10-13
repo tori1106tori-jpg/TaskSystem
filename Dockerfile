@@ -1,17 +1,24 @@
-# 1. Java17が動く軽量なLinux環境をベースにする指示
-FROM eclipse-temurin:17-jdk-alpine
+# 1. 最初からJavaとMaven（組み立て工具）が両方入っている公式環境を使う指示
+FROM maven:3.8.4-openjdk-17-slim AS build
 
-# 2. Renderの中でプログラムを組み立てるための作業フォルダを作成
+# 2. 作業フォルダを作成
 WORKDIR /app
 
-# 3. パソコンからアップロードされたプログラム一式をRenderの中にコピー
+# 3. プログラム一式をコピー
 COPY . .
 
-# 4. Java（Maven）の組み立てを自動実行し、公開用の実行ファイル（jar）を作成
-RUN ./mvnw clean package -DskipTests
+# 4. 最初から入っている mvn コマンドで安全にビルドを実行
+RUN mvn clean package -DskipTests
 
-# 5. Renderの中でWebアプリを起動するポート番号（8080）を開放
+# 5. 動かす用の軽量なJava環境を新しく用意
+FROM eclipse-temurin:17-jdk-alpine
+WORKDIR /app
+
+# 6. 組み立て終わった実行ファイル（jar）だけを次の環境に持ってくる
+COPY --from=build /app/target/demo-0.0.1-SNAPSHOT.jar app.jar
+
+# 7. ポート番号を開放
 EXPOSE 8080
 
-# 6. 完成したJavaプログラムを本番起動する命令
-CMD ["java", "-jar", "target/demo-0.0.1-SNAPSHOT.jar"]
+# 8. 本番起動
+CMD ["java", "-jar", "app.jar"]
