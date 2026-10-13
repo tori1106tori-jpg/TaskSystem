@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>新規タスク作成 - タスク管理システム</title>
+    <!-- すでにある共通のデザインファイル（style.css）を使い回します -->
+    <link th:href="@{/style.css}" rel="stylesheet">
+    <style>
+        /* 新規作成画面用に少しだけデザインを調整 */
+        .form-container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            max-width: 500px;
+            margin: 40px auto; /* 画面の中央に寄せる */
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #4a5568;
+        }
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e0;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            color: #4a5568;
+        }
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        .btn-submit {
+            flex: 1;
+            padding: 12px;
+            background-color: #1a365d;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn-cancel {
+            padding: 12px 20px;
+            background-color: #718096;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="form-container">
+        <h2 style="color: #1a365d; margin-top: 0; margin-bottom: 25px;">＋ 新規タスク登録</h2>
+        
+        <!-- Javaの /tasks/add にデータを送る設定 -->
+        <form th:action="@{/tasks/add}" method="post">
+            
+            <div class="form-group">
+                <label>タイトル</label>
+                <input type="text" name="title" placeholder="タスクのタイトルを入力してください" required>
+            </div>
+            
+            <div class="form-group">
+                <label>カテゴリ</label>
+                <select name="category">
+                    <option value="プライベート">プライベート</option>
+                    <option value="仕事">仕事</option>
+                    <option value="勉強">勉強</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label>優先度</label>
+                <select name="priority">
+                    <option value="高">高</option>
+                    <option value="中" selected>中</option>
+                    <option value="低">低</option>
+                </select>
+            </div>
+            
+            <div class="form-group checkbox-group">
+                <!-- お気に入りはチェックボックスにします（外すと0、入れると1） -->
+                <input type="checkbox" name="isFavorite" value="1" id="fav">
+                <label th:for="fav" style="margin: 0; cursor: pointer;">★ お気に入りに追加する</label>
+            </div>
+            
+            <div class="btn-group">
+                <a th:href="@{/tasks}" class="btn-cancel">戻る</a>
+                <button type="submit" class="btn-submit">登録する</button>
+            </div>
+        </form>
+    </div>
+
+</body>
+</html>
